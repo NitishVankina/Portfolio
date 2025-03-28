@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitish Vankina - Blog</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Include Quill for rich text editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Navigation Bar -->
+        <div class="tabs">
+            <ul>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#about-me">About Me</a></li>
+                <li><a href="index.html#extras">Extras</a></li>
+                <li><a href="login.html" id="login-container">Login</a></li>
+            </ul>
+        </div>
+
+        <!-- Blog Header -->
+        <header class="blog-header">
+            <h1>Welcome to My Blog</h1>
+            <p>Insights, thoughts, and experiences shared with you</p>
+        </header>
+
+        <!-- Blog Posts Section -->
+        <section id="blog-posts" class="content-box orange-rectangle">
+            <div class="post-container">
+                <!-- If logged in, show the "Post" button to create new post -->
+                <div id="post-button-container" class="post-button-container">
+                    <button id="post-button" class="post-button">Create New Post</button>
+                </div>
+
+                <!-- Blog Posts (Placeholder for user-generated posts) -->
+                <div id="user-posts" class="user-posts">
+                    <!-- Posts will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Post Creation Form -->
+            <div id="create-post-form" class="create-post-form" style="display: none;">
+                <h3>Create a New Post</h3>
+                <form id="post-form">
+                    <input type="text" id="post-title" placeholder="Post Title" required>
+                    
+                    <!-- Quill Rich Text Editor -->
+                    <div id="editor-container"></div>
+                    
+                    <input type="file" id="post-image" accept="image/*">
+                    <button type="submit" class="submit-button">Publish Post</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- Include Quill Library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        // Show post creation form when the "Create New Post" button is clicked
+        document.getElementById("post-button").addEventListener("click", function() {
+            document.getElementById("create-post-form").style.display = "block";
+        });
+
+        // Initialize Quill editor
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Write your post here...',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    ['link', 'image'],
+                    [{ 'align': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Handle post form submission
+        document.getElementById("post-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Get the form data
+            var title = document.getElementById("post-title").value;
+            var content = quill.root.innerHTML; // Get HTML content from Quill editor
+            var image = document.getElementById("post-image").files[0];
+
+            var formData = new FormData();
+            formData.append("title", title);
+            formData.append("content", content);
+            formData.append("image", image);
+
+            // Make a POST request to save the post
+            fetch('/save-post', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Post saved successfully') {
+                    // Display the new post on the page
+                    var newPost = document.createElement("div");
+                    newPost.classList.add("post");
+
+                    var postTitle = document.createElement("h3");
+                    postTitle.classList.add("post-title");
+                    postTitle.textContent = title;
+                    newPost.appendChild(postTitle);
+
+                    var postContent = document.createElement("div");
+                    postContent.classList.add("post-content");
+                    postContent.innerHTML = content; // Display HTML content
+                    newPost.appendChild(postContent);
+
+                    if (image) {
+                        var img = document.createElement("img");
+                        img.src = URL.createObjectURL(image);
+                        img.classList.add("post-image");
+                        newPost.appendChild(img);
+                    }
+
+                    // Append the new post to the user posts section
+                    document.getElementById("user-posts").prepend(newPost);
+
+                    // Reset the form
+                    document.getElementById("post-form").reset();
+                    quill.root.innerHTML = ''; // Reset Quill editor
+                    document.getElementById("create-post-form").style.display = "none";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Load all posts when the page loads
+        window.onload = function() {
+            fetch('/posts')
+                .then(response => response.json())
+                .then(posts => {
+                    posts.forEach(post => {
+                        var newPost = document.createElement("div");
+                        newPost.classList.add("post");
+
+                        var postTitle = document.createElement("h3");
+                        postTitle.classList.add("post-title");
+                        postTitle.textContent = post.title;
+                        newPost.appendChild(postTitle);
+
+                        var postContent = document.createElement("div");
+                        postContent.classList.add("post-content");
+                        postContent.innerHTML = post.content;
+                        newPost.appendChild(postContent);
+
+                        if (post.imagePath) {
+                            var img = document.createElement("img");
+                            img.src = post.imagePath;
+                            img.classList.add("post-image");
+                            newPost.appendChild(img);
+                        }
+
+                        document.getElementById("user-posts").appendChild(newPost);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        };
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

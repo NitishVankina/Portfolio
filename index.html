@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitish Vankina - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Navigation Bar -->
+        <div class="tabs">
+            <ul>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#about-me">About Me</a></li>
+                <li><a href="index.html#extras">Extras</a></li>
+                <li><a href="blog.html" id="blog-link">Blog</a></li> <!-- Always visible blog link -->
+                <li><a href="login.html" id="login-container">Login</a></li> <!-- Login link, shows if not logged in -->
+            </ul>
+        </div>
+
+        <!-- Welcome Section -->
+        <header>
+            <h1>Welcome to My Portfolio</h1>
+            <p>Explore my projects, blog posts, and more!</p>
+        </header>
+
+        <!-- About Me Section -->
+        <section id="about-me" class="content-box orange-rectangle">
+            <h2>About Me</h2>
+            <p>I am Nitish Vankina from Centreville, Virginia. I am passionate about technology, learning, and creating. My interests include Foil Fencing, Python programming, Machine Learning, and biking. I love exploring new ideas and building projects that challenge me.</p>
+        </section>
+
+        <!-- Favorite Books and TV Shows Section -->
+        <div class="two-rectangles">
+            <div class="rectangle">
+                <h3>Favorite Books</h3>
+                <ul>
+                    <li>Red Rising</li>
+                    <li>Hyperion Cantos</li>
+                    <li>A Brief History of Nearly Everything</li>
+                    <li>Percy Jackson</li>
+                </ul>
+            </div>
+            <div class="rectangle">
+                <h3>Favorite TV Shows</h3>
+                <ul>
+                    <li>Dune Part Two</li>
+                    <li>Captain America: Civil War</li>
+                    <li>Brooklyn 99</li>
+                    <li>White Collar</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <section id="projects" class="content-box orange-rectangle">
+            <h2>Projects</h2>
+            <div class="project">
+                <h3>Project 1</h3>
+                <p>A brief description of the first project.</p>
+            </div>
+            <div class="project">
+                <h3>Project 2</h3>
+                <p>A brief description of the second project.</p>
+            </div>
+        </section>
+
+        <!-- Extras Section -->
+        <section id="extras" class="content-box orange-rectangle">
+            <h2>Extras</h2>
+            <div class="two-rectangles">
+                <div class="rectangle">
+                    <h3>Blog</h3>
+                    <p>Click here to visit my blog and read my latest posts.</p>
+                    <a href="blog.html" class="link-button">Visit Blog</a>
+                </div>
+                <div class="rectangle">
+                    <h3>YouTube Channel</h3>
+                    <p>Check out my YouTube channel for some cool videos.</p>
+                    <a href="https://www.youtube.com/@AugustOnline" target="_blank" class="link-button">Visit YouTube</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Show login option if user is not logged in
+        window.onload = function () {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                // Hide the login button if the user is logged in
+                document.getElementById('login-container').style.display = 'none';
+            } else {
+                // Show the login button if the user is not logged in
+                document.getElementById('login-container').style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>
