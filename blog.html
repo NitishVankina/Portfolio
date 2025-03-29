@@ -58,6 +58,16 @@
                     <button id="post-button" class="post-button">Create New Post</button>
                 </div>
 
+                <!-- Horizontal, minimalist rectangle that links to post1.html -->
+                <div class="rectangle">
+                    <a href="post1.html">
+                        <div class="rectangle-content">
+                            <h3>Colonizing Mars</h3>
+                            <p>Colonizing Mars has been a staple of science fiction for at least a hundred years by now. And in this modern world, it's a real life possibility...</p>
+                        </div>
+                    </a>
+                </div>
+
                 <!-- Blog Posts (Placeholder for user-generated posts) -->
                 <div id="user-posts" class="user-posts">
                     <!-- Posts will be dynamically added here -->
@@ -94,7 +104,7 @@
             placeholder: 'Write your post here...',
             modules: {
                 toolbar: [
-                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+                    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }], 
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                     ['bold', 'italic', 'underline'],
                     ['link', 'image'],
